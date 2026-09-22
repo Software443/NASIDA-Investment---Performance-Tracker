@@ -1,0 +1,10 @@
+# Copy this file to .env and fill in your actual project values.
+# Find both of these in your Supabase project: Settings > API.
+
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-public-key
+
+# Never put your service_role key in this file or anywhere in the frontend --
+# it bypasses Row Level Security entirely. The anon key above is safe to use
+# in the browser; it only ever acts within the RLS policies defined in
+# supabase/schema.sql.
