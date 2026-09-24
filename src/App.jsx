@@ -1233,19 +1233,6 @@ export default function App() {
             {showFilters && (
               <div className="nasida-fade" style={styles.filterBar}>
                 <div className="nasida-card" style={styles.filterGroup}>
-                  <div style={styles.filterGroupTitle}>Appraisal filters</div>
-                  <div style={styles.filterRow}>
-                    <select style={styles.select} value={ovDept} onChange={(e) => setOvDept(e.target.value)}>
-                      <option value="">All departments</option>
-                      {DEPARTMENTS.map((d) => <option key={d} value={d}>{d}</option>)}
-                    </select>
-                    <select style={styles.select} value={ovStatus} onChange={(e) => setOvStatus(e.target.value)}>
-                      <option value="">All statuses</option>
-                      {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                  </div>
-                </div>
-                <div className="nasida-card" style={styles.filterGroup}>
                   <div style={styles.filterGroupTitle}>Investment filters</div>
                   <div style={styles.filterRow}>
                     <select style={styles.select} value={ovSector} onChange={(e) => setOvSector(e.target.value)}>
