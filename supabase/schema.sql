@@ -94,14 +94,21 @@ create table if not exists appraisals (
   indicator text,
   outcome text,
   status text check (
-    status in ('Not Started', 'Ongoing', 'Completed', 'Delayed')
-  ) default 'Not Started',
+    status in ('Stalled', 'Ongoing', 'Completed')
+  ) default 'Stalled',
   mov text,
   comments text,
   created_by uuid references profiles(id),
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+-- Merge legacy appraisal statuses before enforcing the new status set.
+alter table appraisals drop constraint if exists appraisals_status_check;
+update appraisals
+set status = 'Stalled'
+where status in ('Not Started', 'Delayed');
+alter table appraisals
+add constraint appraisals_status_check check (status in ('Stalled', 'Ongoing', 'Completed'));
 alter table appraisals enable row level security;
 drop policy if exists "Everyone can view appraisals" on appraisals;
 create policy "Everyone can view appraisals" on appraisals for

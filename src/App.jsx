@@ -4,7 +4,7 @@ import { supabase } from "./supabaseClient";
 import * as XLSX from "xlsx";
 import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell,
-  ResponsiveContainer, CartesianGrid, ReferenceLine,
+  ResponsiveContainer, CartesianGrid,
 } from "recharts";
 import {
   LayoutDashboard, ClipboardList, TrendingUp, Users as UsersIcon, Info, Filter,
@@ -16,9 +16,9 @@ import {
 const LOGO_SRC = "data:image/png;base64,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";
 
 const DEPARTMENTS = ["IPF", "PPP", "EODB", "S&I", "ACCOUNT", "COMMS", "ADMIN"];
-const STATUSES = ["Not Started", "Ongoing", "Completed", "Delayed"];
-const STATUS_COLOR = { Completed: "#1f7a4d", Ongoing: "#d9a441", "Not Started": "#9aa79f", Delayed: "#b5493f" };
-const STATUS_ICON = { Completed: CheckCircle2, Ongoing: Clock, "Not Started": Circle, Delayed: AlertTriangle };
+const STATUSES = ["Stalled", "Ongoing", "Completed"];
+const STATUS_COLOR = { Completed: "#1f7a4d", Ongoing: "#d9a441", Stalled: "#b5493f" };
+const STATUS_ICON = { Completed: CheckCircle2, Ongoing: Clock, Stalled: AlertTriangle };
 const SOURCE_COLOR = { FDI: "#0b3d2e", DDI: "#d9a441", HYBRID: "#1f7a4d" };
 const INVESTMENT_STATUSES = ["Announced", "Actualized"];
 const INVESTMENT_STATUS_COLOR = { Announced: "#d9a441", Actualized: "#1f7a4d" };
@@ -77,6 +77,10 @@ const ANNUAL_TARGET = 1000000000; // stored/target figures are in USD
 const FX_RATES = { USD: 1, NGN: 1325 }; // representative mid-market rate; the real app fetches this live
 const FX_SYMBOL = { USD: "$", NGN: "₦" };
 const FX_AS_OF = "Sep 12, 2026";
+
+function normalizeAppraisalStatus(status) {
+  return status === "Not Started" || status === "Delayed" ? "Stalled" : status;
+}
 
 // ---- Custom KPI formula engine ----
 // A small, safe language inspired by DAX's aggregate+filter pattern:
@@ -242,12 +246,12 @@ const DEPT_TARGETS = { IPF: 4, PPP: 3, EODB: 4, "S&I": 3, ACCOUNT: 3, COMMS: 3, 
 // shape (handy if you want to bulk-import sample rows via the Supabase SQL editor).
 const seedAppraisals = [
   { id: 1, department: "IPF", period: "Q1 2026", activity: "Investor roundtable series", objective: "Widen the pipeline of committed investors", indicator: "No. of new leads engaged", outcome: "14 leads engaged, 3 converted to MOUs", status: "Completed", mov: "Attendance sheets, signed MOUs", comments: "Ahead of target" },
-  { id: 2, department: "IPF", period: "Q1 2026", activity: "Diaspora investment forum", objective: "Attract diaspora-backed capital", indicator: "Commitments secured", outcome: "Forum postponed", status: "Delayed", mov: "-", comments: "Venue fell through, rescheduling" },
+  { id: 2, department: "IPF", period: "Q1 2026", activity: "Diaspora investment forum", objective: "Attract diaspora-backed capital", indicator: "Commitments secured", outcome: "Forum postponed", status: "Stalled", mov: "-", comments: "Venue fell through, rescheduling" },
   { id: 3, department: "PPP", period: "Q1 2026", activity: "Concession framework review", objective: "Modernize PPP concession templates", indicator: "Revised framework approved", outcome: "Draft under legal review", status: "Ongoing", mov: "Draft framework document", comments: "Awaiting AG's office sign-off" },
   { id: 4, department: "EODB", period: "Q1 2026", activity: "Permit turnaround audit", objective: "Cut average permit issuance time", indicator: "Average days to issue", outcome: "Down from 21 to 13 days", status: "Completed", mov: "Permit register export", comments: "" },
   { id: 5, department: "S&I", period: "Q1 2026", activity: "Sector baseline survey", objective: "Establish investment baseline by sector", indicator: "Survey completion rate", outcome: "62% of firms surveyed", status: "Ongoing", mov: "Field survey logs", comments: "Extended into Q2" },
-  { id: 6, department: "ACCOUNT", period: "Q1 2026", activity: "Quarterly reconciliation", objective: "Close books within 5 working days", indicator: "Days to close", outcome: "Not yet started", status: "Not Started", mov: "-", comments: "Waiting on bank statements" },
-  { id: 7, department: "COMMS", period: "Q1 2026", activity: "Investor newsletter relaunch", objective: "Grow subscriber engagement", indicator: "Open rate", outcome: "Open rate slipped to 18%", status: "Delayed", mov: "Mailchimp analytics", comments: "Needs new editorial calendar" },
+  { id: 6, department: "ACCOUNT", period: "Q1 2026", activity: "Quarterly reconciliation", objective: "Close books within 5 working days", indicator: "Days to close", outcome: "Not yet started", status: "Stalled", mov: "-", comments: "Waiting on bank statements" },
+  { id: 7, department: "COMMS", period: "Q1 2026", activity: "Investor newsletter relaunch", objective: "Grow subscriber engagement", indicator: "Open rate", outcome: "Open rate slipped to 18%", status: "Stalled", mov: "Mailchimp analytics", comments: "Needs new editorial calendar" },
   { id: 8, department: "ADMIN", period: "Q1 2026", activity: "Fleet maintenance schedule", objective: "Reduce vehicle downtime", indicator: "Downtime days per quarter", outcome: "Schedule published, tracking begins Q2", status: "Ongoing", mov: "Maintenance log", comments: "" },
 ];
 
@@ -423,32 +427,8 @@ function BrandMark({ size = 40 }) {
   );
 }
 
-function generateInsights(appraisals, investments, target, fmtM) {
+function generateInsights(investments, target, fmtM) {
   const insights = [];
-  const total = appraisals.length;
-  const completed = appraisals.filter((r) => r.status === "Completed").length;
-  const delayed = appraisals.filter((r) => r.status === "Delayed");
-  const rate = total ? Math.round((completed / total) * 100) : 0;
-
-  if (total === 0) {
-    insights.push("No activities match the current filters.");
-  } else {
-    insights.push(`${rate}% of the filtered activities are complete (${completed} of ${total}).`);
-    if (delayed.length) {
-      const depts = [...new Set(delayed.map((d) => d.department))].join(", ");
-      insights.push(`${delayed.length} ${delayed.length > 1 ? "activities are" : "activity is"} delayed, concentrated in ${depts} — these need the closest follow-up this quarter.`);
-    }
-    const deptStats = DEPARTMENTS.map((d) => {
-      const rows = appraisals.filter((r) => r.department === d);
-      const c = rows.filter((r) => r.status === "Completed").length;
-      return { d, rate: rows.length ? c / rows.length : 0, rows: rows.length };
-    }).filter((x) => x.rows > 0);
-    if (deptStats.length) {
-      const best = deptStats.reduce((a, b) => (b.rate > a.rate ? b : a));
-      insights.push(`${best.d} has the strongest completion rate in view at ${Math.round(best.rate * 100)}%.`);
-    }
-  }
-
   const totalInvestment = investments.reduce((a, b) => a + Number(b.amount || 0), 0);
   if (investments.length === 0) {
     insights.push("No investment records match the current filters.");
@@ -718,7 +698,7 @@ export default function App() {
   const emptyAppraisal = () => ({
     department: user?.role === "admin" ? DEPARTMENTS[0] : user?.department,
     period: "", activity: "", objective: "", indicator: "", outcome: "",
-    status: "Not Started", mov: "", comments: "",
+    status: "Stalled", mov: "", comments: "",
   });
   const emptyInvestment = () => ({
     company_investor: "", project_description: "", sector: "", lga: "",
@@ -779,7 +759,7 @@ export default function App() {
         supabase.from("employees").select("*").order("created_at", { ascending: false }),
         supabase.from("kpi_definitions").select("*").order("created_at", { ascending: false }),
       ]);
-      if (a) setAppraisals(a);
+      if (a) setAppraisals(a.map((row) => ({ ...row, status: normalizeAppraisalStatus(row.status) })));
       if (i) setInvestments(i);
       if (e) setEmployees(e);
       if (k) setCustomKpis(k);
@@ -793,7 +773,7 @@ export default function App() {
     const channel = supabase
       .channel("nasida-live-sync")
       .on("postgres_changes", { event: "*", schema: "public", table: "appraisals" }, () => {
-        supabase.from("appraisals").select("*").order("created_at", { ascending: false }).then(({ data }) => data && setAppraisals(data));
+        supabase.from("appraisals").select("*").order("created_at", { ascending: false }).then(({ data }) => data && setAppraisals(data.map((row) => ({ ...row, status: normalizeAppraisalStatus(row.status) }))));
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "investments" }, () => {
         supabase.from("investments").select("*").order("created_at", { ascending: false }).then(({ data }) => data && setInvestments(data));
@@ -820,11 +800,11 @@ export default function App() {
   }
 
   const filteredAppraisals = useMemo(() => {
-    return appraisals.filter((r) => (!deptFilter || r.department === deptFilter) && (!statusFilter || r.status === statusFilter));
+    return appraisals.filter((r) => (!deptFilter || r.department === deptFilter) && (!statusFilter || normalizeAppraisalStatus(r.status) === statusFilter));
   }, [appraisals, deptFilter, statusFilter]);
 
   const ovAppraisals = useMemo(() => {
-    return appraisals.filter((r) => (!ovDept || r.department === ovDept) && (!ovStatus || r.status === ovStatus));
+    return appraisals.filter((r) => (!ovDept || r.department === ovDept) && (!ovStatus || normalizeAppraisalStatus(r.status) === ovStatus));
   }, [appraisals, ovDept, ovStatus]);
 
   const ovInvestments = useMemo(() => {
@@ -842,13 +822,12 @@ export default function App() {
         department: d,
         Completed: rows.filter((r) => r.status === "Completed").length,
         Ongoing: rows.filter((r) => r.status === "Ongoing").length,
-        "Not Started": rows.filter((r) => r.status === "Not Started").length,
-        Delayed: rows.filter((r) => r.status === "Delayed").length,
+        Stalled: rows.filter((r) => normalizeAppraisalStatus(r.status) === "Stalled").length,
       };
     });
     const targetVsActual = activeDepts.map((d) => {
       const rows = ovAppraisals.filter((r) => r.department === d);
-      return { department: d, Completed: rows.filter((r) => r.status === "Completed").length, Total: rows.length, Target: DEPT_TARGETS[d] || 0 };
+      return { department: d, Completed: rows.filter((r) => r.status === "Completed").length, Total: rows.length, Targeted: rows.length };
     });
     const overall = STATUSES.map((s) => ({ name: s, value: ovAppraisals.filter((r) => r.status === s).length }));
 
@@ -908,10 +887,10 @@ export default function App() {
       .sort((a, b) => b.pct - a.pct);
   }, [summary.targetVsActual]);
 
-  const insights = useMemo(() => generateInsights(ovAppraisals, ovInvestments, ANNUAL_TARGET, fmtM), [ovAppraisals, ovInvestments, currency]);
+  const insights = useMemo(() => generateInsights(ovInvestments, ANNUAL_TARGET, fmtM), [ovInvestments, currency]);
   const kpiPct = Math.min(100, Math.round((summary.totalAmount / ANNUAL_TARGET) * 100));
   const completedCount = ovAppraisals.filter((r) => r.status === "Completed").length;
-  const delayedCount = ovAppraisals.filter((r) => r.status === "Delayed").length;
+  const stalledCount = ovAppraisals.filter((r) => normalizeAppraisalStatus(r.status) === "Stalled").length;
   const completionRate = ovAppraisals.length ? Math.round((completedCount / ovAppraisals.length) * 100) : 0;
 
   const animatedAmount = useCountUp(summary.totalAmount);
@@ -922,11 +901,12 @@ export default function App() {
   async function submitAppraisal(e) {
     e.preventDefault();
     if (editingA) {
-      const { data, error } = await supabase.from("appraisals").update({ ...formA, updated_at: new Date().toISOString() }).eq("id", editingA).select().single();
-      if (!error && data) setAppraisals(appraisals.map((r) => (r.id === editingA ? data : r)));
+      const payload = { ...formA, status: normalizeAppraisalStatus(formA.status), updated_at: new Date().toISOString() };
+      const { data, error } = await supabase.from("appraisals").update(payload).eq("id", editingA).select().single();
+      if (!error && data) setAppraisals(appraisals.map((r) => (r.id === editingA ? { ...data, status: normalizeAppraisalStatus(data.status) } : r)));
     } else {
-      const { data, error } = await supabase.from("appraisals").insert({ ...formA, created_by: user.id }).select().single();
-      if (!error && data) setAppraisals([data, ...appraisals]);
+      const { data, error } = await supabase.from("appraisals").insert({ ...formA, status: normalizeAppraisalStatus(formA.status), created_by: user.id }).select().single();
+      if (!error && data) setAppraisals([{ ...data, status: normalizeAppraisalStatus(data.status) }, ...appraisals]);
     }
     setEditingA(null); setFormA(emptyAppraisal());
   }
@@ -1296,8 +1276,14 @@ export default function App() {
               <KpiCard icon={DollarSign} label="TOTAL INVESTMENT" value={fmtM(animatedAmount)}
                 subs={[
                   { value: `${kpiPct}%`, label: "OF $1B TARGET", tone: kpiPct >= 50 ? "up" : "down" },
-                  { value: fmt(summary.avgDeal), label: "AVG DEAL SIZE", tone: "neutral" },
-                  { value: fmtM(summary.latestQuarterAmount), label: "LATEST QUARTER", tone: "neutral" },
+                  { value: fmtM(summary.announcedAmount), label: "ANNOUNCED INVESTMENT WORTH", tone: "neutral" },
+                  { value: fmtM(summary.actualizedAmount), label: "ACTUALIZED INVESTMENT WORTH", tone: "up" },
+                ]} />
+              <KpiCard icon={Layers} label="INVESTMENT PORTFOLIO" value={`${summary.announcedCount + summary.actualizedCount} projects`}
+                subs={[
+                  { value: summary.announcedCount, label: "ANNOUNCED", tone: "neutral" },
+                  { value: summary.actualizedCount, label: "ACTUALIZED", tone: "up" },
+                  { value: `${summary.announcedCount + summary.actualizedCount ? Math.round((summary.actualizedCount / (summary.announcedCount + summary.actualizedCount)) * 100) : 0}%`, label: "ACTUALIZED RATE", tone: "neutral" },
                 ]} />
               <KpiCard icon={UsersIcon} label="JOBS TO BE CREATED" value={Math.round(animatedJobs).toLocaleString()}
                 subs={[
@@ -1310,12 +1296,6 @@ export default function App() {
                   { value: summary.fdiCount, label: "FDI DEALS", tone: "neutral" },
                   { value: summary.ddiCount, label: "DDI DEALS", tone: "neutral" },
                   { value: summary.sectorsCovered, label: "SECTORS COVERED", tone: "neutral" },
-                ]} />
-              <KpiCard icon={Layers} label="INVESTMENT PORTFOLIO" value={`${summary.announcedCount + summary.actualizedCount} projects`}
-                subs={[
-                  { value: summary.announcedCount, label: "ANNOUNCED", tone: "neutral" },
-                  { value: summary.actualizedCount, label: "ACTUALIZED", tone: "up" },
-                  { value: `${summary.announcedCount + summary.actualizedCount ? Math.round((summary.actualizedCount / (summary.announcedCount + summary.actualizedCount)) * 100) : 0}%`, label: "ACTUALIZED RATE", tone: "neutral" },
                 ]} />
             </div>
 
@@ -1392,11 +1372,13 @@ export default function App() {
                   <LineChart data={summary.byQuarter}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e7ebe6" />
                     <XAxis dataKey="quarter" tick={{ fontSize: 11 }} />
-                    <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => (trendMetric === "amount" ? fmtM(v) : v)} />
+                    <YAxis
+                      tick={{ fontSize: 11 }}
+                      domain={trendMetric === "amount" ? [0, 300000000] : [0, "auto"]}
+                      ticks={trendMetric === "amount" ? [0, 100000000, 200000000, 300000000] : undefined}
+                      tickFormatter={(v) => (trendMetric === "amount" ? fmtM(v) : v)}
+                    />
                     <Tooltip formatter={(v) => (trendMetric === "amount" ? fmt(v) : v)} />
-                    {trendMetric === "amount" && (
-                      <ReferenceLine y={ANNUAL_TARGET / 4} stroke="#b5493f" strokeDasharray="4 4" label={{ value: "Pace needed", position: "insideTopRight", fontSize: 10, fill: "#b5493f" }} />
-                    )}
                     <Line type="monotone" dataKey={trendMetric} stroke="#0b3d2e" strokeWidth={2.5} dot={{ r: 4, fill: "#0b3d2e" }} activeDot={{ r: 6 }} animationDuration={700} />
                   </LineChart>
                 </ResponsiveContainer>
@@ -1625,11 +1607,13 @@ export default function App() {
 
             <div style={styles.tableWrap}>
               <table style={styles.table}>
-                <thead><tr>{["Company/Investor", "Department", "Sector", "LGA", "Amount", "Source", "Status", "Jobs", "Date", user.role === "admin" ? "" : null].filter((h) => h !== null).map((h, i) => <th key={i} style={styles.th}>{h}</th>)}</tr></thead>
+                <thead><tr>{["S/N", "Company/Investor", "Project Description", "Department", "Sector", "LGA", "Amount", "Source", "Status", "Jobs", "Date", user.role === "admin" ? "" : null].filter((h) => h !== null).map((h, i) => <th key={i} style={styles.th}>{h}</th>)}</tr></thead>
                 <tbody>
-                  {investments.map((r) => (
+                  {investments.map((r, index) => (
                     <tr key={r.id} className="nasida-row">
+                      <td style={styles.td}>{index + 1}</td>
                       <td style={styles.td}>{r.company_investor}</td>
+                      <td style={styles.td}>{r.project_description || "—"}</td>
                       <td style={styles.td}>{r.department}</td>
                       <td style={styles.td}>{r.sector}</td>
                       <td style={styles.td}>{r.lga}</td>
@@ -1724,7 +1708,7 @@ export default function App() {
               <KpiCard icon={CheckCircle2} label="ACTIVITIES COMPLETED" value={`${Math.round(animatedCompleted)} / ${ovAppraisals.length}`}
                 subs={[
                   { value: `${completionRate}%`, label: "COMPLETION RATE", tone: completionRate >= 50 ? "up" : "down" },
-                  { value: delayedCount, label: "DELAYED", tone: delayedCount > 0 ? "down" : "up" },
+                  { value: stalledCount, label: "STALLED", tone: stalledCount > 0 ? "down" : "up" },
                   { value: summary.onTrackDepts, label: "DEPTS ON TRACK", tone: "neutral" },
                 ]} />
             </div>
@@ -1839,7 +1823,7 @@ export default function App() {
             </div>
 
             <div style={styles.tripleGrid}>
-              <ChartBox title="Completed, by department">
+              <ChartBox title="Completed Activities">
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={summary.byDept}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e7ebe6" />
@@ -1850,7 +1834,7 @@ export default function App() {
                   </BarChart>
                 </ResponsiveContainer>
               </ChartBox>
-              <ChartBox title="Ongoing, by department">
+              <ChartBox title="Ongoing Activities">
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={summary.byDept}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e7ebe6" />
@@ -1861,28 +1845,28 @@ export default function App() {
                   </BarChart>
                 </ResponsiveContainer>
               </ChartBox>
-              <ChartBox title="Not started, by department">
+              <ChartBox title="Stalled Activities">
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={summary.byDept}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e7ebe6" />
                     <XAxis dataKey="department" tick={{ fontSize: 11 }} />
                     <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
                     <Tooltip />
-                    <Bar dataKey="Not Started" fill={STATUS_COLOR["Not Started"]} radius={[4, 4, 0, 0]} animationDuration={700} />
+                    <Bar dataKey="Stalled" fill={STATUS_COLOR.Stalled} radius={[4, 4, 0, 0]} animationDuration={700} />
                   </BarChart>
                 </ResponsiveContainer>
               </ChartBox>
             </div>
 
             <div className="nasida-chart-grid" style={styles.chartGrid}>
-              <ChartBox title="Completed vs. target, by department">
+              <ChartBox title="Completed vs. Targeted Activities">
                 <ResponsiveContainer width="100%" height={250}>
                   <BarChart data={summary.targetVsActual}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e7ebe6" />
                     <XAxis dataKey="department" tick={{ fontSize: 11 }} />
                     <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
                     <Tooltip />
-                    <Bar dataKey="Target" fill="#c9d3ce" radius={[4, 4, 0, 0]} animationDuration={700} />
+                    <Bar dataKey="Targeted" fill="#c9d3ce" radius={[4, 4, 0, 0]} animationDuration={700} />
                     <Bar dataKey="Completed" fill={STATUS_COLOR.Completed} radius={[4, 4, 0, 0]} animationDuration={700} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -1936,7 +1920,7 @@ export default function App() {
                         <span style={styles.compositionCount}>{d.Completed} of {d.Total} activities completed</span>
                       </div>
                       <div style={styles.compositionTrack}>
-                        <div className="nasida-progress-fill" style={{ ...styles.compositionFill, width: `${Math.min(100, d.pct)}%`, background: d.pct >= 100 ? STATUS_COLOR.Completed : d.pct >= 60 ? STATUS_COLOR.Ongoing : STATUS_COLOR.Delayed }} />
+                        <div className="nasida-progress-fill" style={{ ...styles.compositionFill, width: `${Math.min(100, d.pct)}%`, background: d.pct >= 100 ? STATUS_COLOR.Completed : d.pct >= 60 ? STATUS_COLOR.Ongoing : STATUS_COLOR.Stalled }} />
                       </div>
                     </div>
                     <span style={styles.compositionPct}>{d.pct}%</span>
@@ -2006,17 +1990,18 @@ export default function App() {
                 <div style={styles.tableWrap}>
                   <table style={styles.table}>
                     <thead>
-                      <tr>{["Name", "Department", "Gender", "Job category", "Designation", "Status", "Hire date", "Exit date", ""].map((h) => <th key={h} style={styles.th}>{h}</th>)}</tr>
+                      <tr>{["S/N", "Name", "Department", "Gender", "Job category", "Designation", "Status", "Hire date", "Exit date", ""].map((h) => <th key={h} style={styles.th}>{h}</th>)}</tr>
                     </thead>
                     <tbody>
-                      {employees.map((r) => (
+                      {employees.map((r, index) => (
                         <tr key={r.id} className="nasida-row">
+                          <td style={styles.td}>{index + 1}</td>
                           <td style={styles.td}>{r.name}</td>
                           <td style={styles.td}>{r.department || "—"}</td>
                           <td style={styles.td}>{r.gender}</td>
                           <td style={styles.td}>{r.job_category}</td>
                           <td style={styles.td}>{r.designation}</td>
-                          <td style={styles.td}><Badge color={r.status === "Active" ? STATUS_COLOR.Completed : STATUS_COLOR.Delayed}>{r.status}</Badge></td>
+                          <td style={styles.td}><Badge color={r.status === "Active" ? STATUS_COLOR.Completed : STATUS_COLOR.Stalled}>{r.status}</Badge></td>
                           <td style={styles.td}>{r.hire_date}</td>
                           <td style={styles.td}>{r.exit_date || "—"}</td>
                           <td style={styles.td}>
