@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "./supabaseClient";
 import * as XLSX from "xlsx";
 import {
@@ -1140,11 +1141,37 @@ export default function App() {
   return (
     <div className={`nasida-shell ${sidebarCollapsed ? "nasida-sidebar-collapsed" : ""}`} style={styles.shell}>
       <GlobalStyle />
-      <aside className="nasida-sidebar" style={styles.sidebar}>
+      <motion.aside
+        className="nasida-sidebar"
+        style={styles.sidebar}
+        initial={false}
+        animate={{ width: sidebarCollapsed ? 72 : 240 }}
+        transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
+      >
         <button className="nasida-sidebar-toggle" type="button" onClick={toggleSidebar} aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"} title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}>
-          {sidebarCollapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={sidebarCollapsed ? "expand" : "collapse"}
+              initial={{ opacity: 0, rotate: -30, scale: 0.8 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: 30, scale: 0.8 }}
+              transition={{ duration: 0.16 }}
+              style={{ display: "inline-flex" }}
+            >
+              {sidebarCollapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
+            </motion.span>
+          </AnimatePresence>
         </button>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}><BrandMark size={66} /></div>
+        <motion.div
+          className="nasida-brand-mark-wrap"
+          layout
+          title="NASIDA dashboard"
+          aria-label="NASIDA dashboard"
+          role="img"
+          style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}
+        >
+          <BrandMark size={sidebarCollapsed ? 32 : 66} />
+        </motion.div>
         <div className="nasida-sidebar-brand-text" style={styles.sidebarBrandText}>
           <div style={styles.brandTitle}>NASIDA</div>
           <div style={styles.brandSub}>Performance &amp; Investment Register</div>
@@ -1186,9 +1213,14 @@ export default function App() {
           <div style={styles.userRole}>{user.role === "admin" ? "Admin" : `${user.department} staff`}</div>
           <button className="nasida-btn" style={styles.switchBtn} onClick={handleLogout}>Sign out</button>
         </div>
-      </aside>
+      </motion.aside>
 
-      <main className="nasida-main" style={styles.main}>
+      <motion.main
+        className="nasida-main"
+        style={styles.main}
+        layout
+        transition={{ layout: { type: "spring", stiffness: 360, damping: 32, mass: 0.8 } }}
+      >
         {showInfo && (
           <div style={styles.modalOverlay} onClick={() => setShowInfo(false)}>
             <div className="nasida-fade nasida-modal-card" style={styles.modalCard} onClick={(e) => e.stopPropagation()}>
@@ -2108,7 +2140,7 @@ export default function App() {
             </div>
           </section>
         )}
-      </main>
+      </motion.main>
     </div>
   );
 }
