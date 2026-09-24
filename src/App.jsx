@@ -754,7 +754,7 @@ export default function App() {
 
     async function loadAll() {
       const [{ data: a }, { data: i }, { data: e }, { data: k }] = await Promise.all([
-        supabase.from("appraisals").select("*").order("created_at", { ascending: false }),
+        supabase.from("appraisals").select("*").order("created_at", { ascending: true }),
         supabase.from("investments").select("*").order("created_at", { ascending: false }),
         supabase.from("employees").select("*").order("created_at", { ascending: false }),
         supabase.from("kpi_definitions").select("*").order("created_at", { ascending: false }),
@@ -773,7 +773,7 @@ export default function App() {
     const channel = supabase
       .channel("nasida-live-sync")
       .on("postgres_changes", { event: "*", schema: "public", table: "appraisals" }, () => {
-        supabase.from("appraisals").select("*").order("created_at", { ascending: false }).then(({ data }) => data && setAppraisals(data.map((row) => ({ ...row, status: normalizeAppraisalStatus(row.status) }))));
+        supabase.from("appraisals").select("*").order("created_at", { ascending: true }).then(({ data }) => data && setAppraisals(data.map((row) => ({ ...row, status: normalizeAppraisalStatus(row.status) }))));
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "investments" }, () => {
         supabase.from("investments").select("*").order("created_at", { ascending: false }).then(({ data }) => data && setInvestments(data));
@@ -906,7 +906,7 @@ export default function App() {
       if (!error && data) setAppraisals(appraisals.map((r) => (r.id === editingA ? { ...data, status: normalizeAppraisalStatus(data.status) } : r)));
     } else {
       const { data, error } = await supabase.from("appraisals").insert({ ...formA, status: normalizeAppraisalStatus(formA.status), created_by: user.id }).select().single();
-      if (!error && data) setAppraisals([{ ...data, status: normalizeAppraisalStatus(data.status) }, ...appraisals]);
+      if (!error && data) setAppraisals([...appraisals, { ...data, status: normalizeAppraisalStatus(data.status) }]);
     }
     setEditingA(null); setFormA(emptyAppraisal());
   }
