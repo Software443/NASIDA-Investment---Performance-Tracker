@@ -575,7 +575,7 @@ export default function App() {
       if (!error && data) setEmployees(employees.map((r) => (r.id === editingE ? data : r)));
     } else {
       const { data, error } = await supabase.from("employees").insert({ ...payload, created_by: user.id }).select().single();
-      if (!error && data) setEmployees([data, ...employees]);
+      if (!error && data) setEmployees([...employees, data]);
     }
     setEditingE(null);
     setFormE(emptyEmployee());
@@ -756,7 +756,7 @@ export default function App() {
       const [{ data: a }, { data: i }, { data: e }, { data: k }] = await Promise.all([
         supabase.from("appraisals").select("*").order("created_at", { ascending: true }),
         supabase.from("investments").select("*").order("created_at", { ascending: false }),
-        supabase.from("employees").select("*").order("created_at", { ascending: false }),
+        supabase.from("employees").select("*").order("created_at", { ascending: true }),
         supabase.from("kpi_definitions").select("*").order("created_at", { ascending: false }),
       ]);
       if (a) setAppraisals(a.map((row) => ({ ...row, status: normalizeAppraisalStatus(row.status) })));
@@ -779,7 +779,7 @@ export default function App() {
         supabase.from("investments").select("*").order("created_at", { ascending: false }).then(({ data }) => data && setInvestments(data));
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "employees" }, () => {
-        supabase.from("employees").select("*").order("created_at", { ascending: false }).then(({ data }) => data && setEmployees(data));
+        supabase.from("employees").select("*").order("created_at", { ascending: true }).then(({ data }) => data && setEmployees(data));
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "kpi_definitions" }, () => {
         supabase.from("kpi_definitions").select("*").order("created_at", { ascending: false }).then(({ data }) => data && setCustomKpis(data));
