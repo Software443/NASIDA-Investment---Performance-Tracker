@@ -560,6 +560,8 @@ export default function App() {
 
   const [employees, setEmployees] = useState([]);
   const [wfGender, setWfGender] = useState("All");
+  const [wfStatus, setWfStatus] = useState("");
+  const [wfJobCategory, setWfJobCategory] = useState("");
   const [editingE, setEditingE] = useState(null);
   const emptyEmployee = () => ({
     name: "", department: DEPARTMENTS[0], gender: "Male", job_category: "Fulltime",
@@ -590,10 +592,15 @@ export default function App() {
     setFormE({ ...r, exit_date: r.exit_date || "" });
   }
 
+  const filteredEmployees = useMemo(() => employees.filter((employee) =>
+    (!wfStatus || employee.status === wfStatus) &&
+    (!wfJobCategory || employee.job_category === wfJobCategory)
+  ), [employees, wfStatus, wfJobCategory]);
+
   const workforceSummary = useMemo(() => {
     // Everything below is scoped to the current gender filter, so both the charts
     // AND the KPI cards react when you flip between All / Male / Female.
-    const filtered = wfGender === "All" ? employees : employees.filter((e) => e.gender === wfGender);
+    const filtered = wfGender === "All" ? filteredEmployees : filteredEmployees.filter((e) => e.gender === wfGender);
     const active = filtered.filter((e) => e.status === "Active");
     const exited = filtered.filter((e) => e.status === "Exited");
     const totalStaff = active.length;
@@ -631,7 +638,7 @@ export default function App() {
       topDept, topJobCategory, topDesignation, deptsRepresented,
       byDept, byJobCategory, byDesignation,
     };
-  }, [employees, wfGender]);
+  }, [employees, filteredEmployees, wfGender]);
 
   const investmentByDept = useMemo(() => {
     return DEPARTMENTS.map((d) => ({
@@ -796,6 +803,7 @@ export default function App() {
   function resetWfFilters() {
     setWfSpinning(true);
     setOvDept(""); setOvStatus("");
+    setWfStatus(""); setWfJobCategory("");
     setTimeout(() => setWfSpinning(false), 500);
   }
 
@@ -1663,6 +1671,20 @@ export default function App() {
                     </select>
                   </div>
                 </div>
+                <div className="nasida-card" style={styles.filterGroup}>
+                  <div style={styles.filterGroupTitle}>Workforce filters</div>
+                  <div style={styles.filterRow}>
+                    <select style={styles.select} value={wfStatus} onChange={(e) => setWfStatus(e.target.value)}>
+                      <option value="">All employee statuses</option>
+                      <option value="Active">Active</option>
+                      <option value="Exited">Exited</option>
+                    </select>
+                    <select style={styles.select} value={wfJobCategory} onChange={(e) => setWfJobCategory(e.target.value)}>
+                      <option value="">All job categories</option>
+                      {JOB_CATEGORIES.map((category) => <option key={category} value={category}>{category}</option>)}
+                    </select>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -1981,7 +2003,7 @@ export default function App() {
                       <tr>{["S/N", "Name", "Department", "Gender", "Job category", "Designation", "Status", "Hire date", "Exit date", ""].map((h) => <th key={h} style={styles.th}>{h}</th>)}</tr>
                     </thead>
                     <tbody>
-                      {employees.map((r, index) => (
+                      {filteredEmployees.map((r, index) => (
                         <tr key={r.id} className="nasida-row">
                           <td style={styles.td}>{index + 1}</td>
                           <td style={styles.td}>{r.name}</td>
