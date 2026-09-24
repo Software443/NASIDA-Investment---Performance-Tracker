@@ -1452,12 +1452,13 @@ export default function App() {
 
             <div style={styles.tableWrap}>
               <table style={styles.table}>
-                <thead><tr>{["Dept", "Period", "Activity", "Outcome", "Status", "MoVs", "Comments", ""].map((h) => <th key={h} style={styles.th}>{h}</th>)}</tr></thead>
+                <thead><tr>{["S/N", "Dept", "Period", "Activity", "Outcome", "Status", "MoVs", "Comments", ""].map((h) => <th key={h} style={styles.th}>{h}</th>)}</tr></thead>
                 <tbody>
-                  {filteredAppraisals.map((r) => {
+                  {filteredAppraisals.map((r, index) => {
                     const movLinks = parseMovLinks(r.mov);
                     return (
                       <tr key={r.id} className="nasida-row">
+                        <td style={styles.td}>{index + 1}</td>
                         <td style={styles.td}>{r.department}</td>
                         <td style={styles.td}>{r.period}</td>
                         <td style={styles.td}>{r.activity}</td>
